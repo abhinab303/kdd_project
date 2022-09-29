@@ -10,11 +10,12 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
-l = 50
+l = 250
 
-data_dir = "/content/drive/Shareddrives/ISTE780project/data/"
-fig_dir = "/content/drive/Shareddrives/ISTE780project/plots/"
+data_dir = "/home/aa7514/PycharmProjects/kdd_project/data/"
+fig_dir = "/home/aa7514/PycharmProjects/kdd_project/plots/"
 
 model_args = ModelArgs(max_seq_length=100)
 emb_model = RepresentationModel(
@@ -62,11 +63,19 @@ def eval_models(clf):
     print("Train: ", clf.score(x_train, y_train))
     print("Test: ", clf.score(x_test, y_test))
 
+print("AdaBoost: ")
+eval_models(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(random_state=0),
+                               n_estimators=10, random_state=0))
+# # print("LR: ")
+# # eval_models(LogisticRegression(random_state=0))
+# # print("NN: ")
+# # eval_models(MLPClassifier(random_state=1, max_iter=300))
+print("RF: ")
+eval_models(RandomForestClassifier(
+    # n_estimators=10,
+                                   # max_depth=2,
+                                   random_state=0))
 
-eval_models(AdaBoostClassifier(n_estimators=100, random_state=0))
-eval_models(LogisticRegression(random_state=0))
-eval_models(MLPClassifier(random_state=1, max_iter=300))
-eval_models(RandomForestClassifier(max_depth=2, random_state=0))
-
-
+# from sklearn.tree import DecisionTreeClassifier
+# eval_models(DecisionTreeClassifier(random_state=0))
 
