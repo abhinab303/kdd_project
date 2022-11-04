@@ -63,8 +63,8 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=4)
 print(skf.get_n_splits(api_dataframe["ServiceDescription"], api_dataframe["ServiceClassification"]))
 fold = 1
 
-max_iter = [250]
-class_weight = ["balanced"]
+max_iter = [250, 300, 400, 350, 500]
+class_weight = [None, ]
 c_param = [1]
 
 result_dict = {
@@ -77,7 +77,6 @@ result_dict = {
     'Precision': [],
     'Recall': [],
 }
-
 
 for itr in max_iter:
     for cpm in c_param:
