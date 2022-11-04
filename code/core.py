@@ -15,7 +15,6 @@ import pdb
 
 import time
 
-
 l = 50
 
 data_dir = "/home/aa7514/PycharmProjects/kdd_project/data/"
@@ -118,7 +117,7 @@ for itr in max_iter:
 
             csv_df = pd.DataFrame.from_dict(result_dict)
             pdb.set_trace()
-            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50.csv"
+            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_1.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
 
