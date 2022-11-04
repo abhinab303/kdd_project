@@ -63,9 +63,9 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=4)
 print(skf.get_n_splits(api_dataframe["ServiceDescription"], api_dataframe["ServiceClassification"]))
 fold = 1
 
-max_iter = [400]
-class_weight = [None,]
-c_param = [1, 2, 3, 4, 5]
+max_iter = [500]
+class_weight = ["balanced",]
+c_param = [0.2268]
 
 result_dict = {
     'max_iter': [],
