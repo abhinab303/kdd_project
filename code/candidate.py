@@ -12,7 +12,9 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-l = 250
+from sklearn.metrics import precision_score, f1_score, recall_score
+
+l = 50
 
 data_dir = "/home/aa7514/PycharmProjects/kdd_project/data/"
 fig_dir = "/home/aa7514/PycharmProjects/kdd_project/plots/"
@@ -60,16 +62,24 @@ print("label count: ", len(np.unique(y_train)))
 
 def eval_models(clf):
     clf.fit(x_train, y_train)
+
+    pdn = clf.predict(x_test)
+
+    f_score = f1_score(y_test, pdn, average='weighted')
+    precision = precision_score(y_test, pdn, average='weighted')
+    recall = recall_score(y_test, pdn, average='weighted')
+
     print("Train: ", clf.score(x_train, y_train))
     print("Test: ", clf.score(x_test, y_test))
+    print("F P R: ", f_score, precision, recall)
 
 print("AdaBoost: ")
 eval_models(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(random_state=0),
                                n_estimators=10, random_state=0))
-# # print("LR: ")
-# # eval_models(LogisticRegression(random_state=0))
-# # print("NN: ")
-# # eval_models(MLPClassifier(random_state=1, max_iter=300))
+print("LR: ")
+eval_models(LogisticRegression(random_state=0))
+print("NN: ")
+eval_models(MLPClassifier(random_state=1, max_iter=300))
 print("RF: ")
 eval_models(RandomForestClassifier(
     # n_estimators=10,
