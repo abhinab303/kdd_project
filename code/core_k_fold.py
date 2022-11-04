@@ -63,9 +63,9 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=4)
 print(skf.get_n_splits(api_dataframe["ServiceDescription"], api_dataframe["ServiceClassification"]))
 fold = 1
 
-max_iter = [250, 300, 400, 350, 500]
-class_weight = [None, ]
-c_param = [1]
+max_iter = [400]
+class_weight = [None,]
+c_param = [1, 2, 3, 4, 5]
 
 result_dict = {
     'max_iter': [],
@@ -152,6 +152,6 @@ for itr in max_iter:
 
             csv_df = pd.DataFrame.from_dict(result_dict)
             # pdb.set_trace()
-            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_k_fold.csv"
+            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_k_fold_2.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
