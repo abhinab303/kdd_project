@@ -120,10 +120,10 @@ for itr in max_iter:
             result_dict['Recall'].append(str(recall))
 
             csv_df = pd.DataFrame.from_dict(result_dict)
-            pdb.set_trace()
+            # pdb.set_trace()
             csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
 
 pass
-pdb.set_trace()
+# pdb.set_trace()
