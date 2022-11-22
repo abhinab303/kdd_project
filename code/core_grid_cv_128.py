@@ -98,5 +98,4 @@ clf = GridSearchCV(svm_p, distributions, n_jobs=-1)
 search = clf.fit(x_train, y_train)
 print("best params: ", search.best_params_)
 
-
-# besr params:
+# best params:  {'C': 0.24489795918367346, 'class_weight': None, 'penalty': 'l2'}

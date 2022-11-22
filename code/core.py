@@ -23,8 +23,8 @@ fig_dir = "/home/aa7514/PycharmProjects/kdd_project/plots/"
 model_args = ModelArgs(max_seq_length=100)
 emb_model = RepresentationModel(
         model_type="bert",
-        model_name="bert-base-uncased",
-        # model_name="google/bert_uncased_L-2_H-128_A-2",
+        # model_name="bert-base-uncased",
+        model_name="google/bert_uncased_L-2_H-128_A-2",
         use_cuda=True,
         # args= model_args
     )
@@ -41,8 +41,8 @@ api_dataframe.reset_index(inplace=True, drop=True)
 training_data = api_dataframe.iloc[0:len(train_df)]
 testing_data = api_dataframe.iloc[len(train_df):]
 
-# op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny{l}.npy"
-op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb{l}.npy"
+op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny{l}.npy"
+# op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb{l}.npy"
 op_file = Path(op_file_path)
 if op_file.exists():
     word_vectors = np.load(op_file_path)
@@ -78,7 +78,7 @@ max_iter = [1000]
 # class_weight = ["balanced", None]
 class_weight = [None]
 # c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-c_param = [1]
+c_param = [0.24489795918367346]
 
 result_dict = {
     'max_iter': [],
@@ -122,9 +122,17 @@ for itr in max_iter:
 
             csv_df = pd.DataFrame.from_dict(result_dict)
             # pdb.set_trace()
-            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny.csv"
+            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny_grid_search.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
 
 pass
 # pdb.set_trace()
+
+# without max iter in search:
+# grid search:
+# random search:
+
+# with max iter in search:
+# grid search:
+# random search:
