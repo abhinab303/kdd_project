@@ -7,7 +7,7 @@ from simpletransformers.config.model_args import ModelArgs
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import precision_score, f1_score, recall_score
 
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from scipy.stats import uniform
 
 from sklearn import svm
@@ -93,10 +93,10 @@ result_dict = {
 print("training...")
 start_time = time.time()
 svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
-distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'], class_weight=["balanced", None], )
-clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=5)
+distributions = dict(C=np.linspace(0,1,50), penalty=['l2', 'l1'], class_weight=["balanced", None], )
+clf = GridSearchCV(svm_p, distributions, n_jobs=-1)
 search = clf.fit(x_train, y_train)
 print("best params: ", search.best_params_)
 
 
-# besr params:  {'C': 0.28414423279154777, 'class_weight': None, 'penalty': 'l2'}
+# besr params:
