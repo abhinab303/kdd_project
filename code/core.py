@@ -78,7 +78,7 @@ max_iter = [1000]
 # class_weight = ["balanced", None]
 class_weight = [None]
 # c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-c_param = [0.24489795918367346]
+c_param = [0.28414423279154777]
 
 result_dict = {
     'max_iter': [],
