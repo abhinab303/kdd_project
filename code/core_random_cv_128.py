@@ -74,7 +74,9 @@ y_test = label_encoder.fit_transform(values)
 print("label count: ", len(np.unique(y_train)))
 
 # Hyper Params:
-max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
+# max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
+
+max_iter = [1] + list(range(50,1050,50))
 class_weight = ["balanced", None]
 c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
@@ -93,8 +95,9 @@ result_dict = {
 print("training...")
 start_time = time.time()
 svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
-distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'], class_weight=["balanced", None], )
-clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=5)
+distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'],
+                     class_weight=["balanced", None], max_iter=max_iter)
+clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1)
 search = clf.fit(x_train, y_train)
 print("best params: ", search.best_params_)
 

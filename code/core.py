@@ -130,9 +130,9 @@ pass
 # pdb.set_trace()
 
 # without max iter in search:
-#                  Train            Test                F1 score             Precision          Recall
-# grid search: 0.54731029866979	0.4887043189368770	0.45534338985173300	0.4597240653136050	0.4887043189368770
-# random search:
+#                  Train             Test                 F1 score             Precision          Recall
+# grid search:   0.54731029866979	0.4887043189368770	0.45534338985173300	0.4597240653136050	0.4887043189368770
+# random search: 0.5480632477202380	0.48903654485049800	0.45632014255216900	0.459341798724965	0.48903654485049800
 
 # with max iter in search:
 # grid search:
