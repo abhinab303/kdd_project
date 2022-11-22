@@ -122,7 +122,7 @@ for itr in max_iter:
 
             csv_df = pd.DataFrame.from_dict(result_dict)
             # pdb.set_trace()
-            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny_grid_search.csv"
+            csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny_random_search.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
 
@@ -130,7 +130,8 @@ pass
 # pdb.set_trace()
 
 # without max iter in search:
-# grid search:
+#                  Train            Test                F1 score             Precision          Recall
+# grid search: 0.54731029866979	0.4887043189368770	0.45534338985173300	0.4597240653136050	0.4887043189368770
 # random search:
 
 # with max iter in search:
