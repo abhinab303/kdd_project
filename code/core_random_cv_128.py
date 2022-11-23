@@ -97,12 +97,15 @@ start_time = time.time()
 svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
 distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'],
                      class_weight=["balanced", None], max_iter=max_iter)
-clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1)
+clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1, scoring="f1_weighted")
 search = clf.fit(x_train, y_train)
 print("best params: ", search.best_params_)
 
 
 # besr params:  {'C': 0.28414423279154777, 'class_weight': None, 'penalty': 'l2'}
 
-# random search with max iter:
+# random search with max iter (accuracy):
 # 'C': 0.08087358976130288, 'class_weight': None, 'max_iter': 250, 'penalty': 'l2'
+
+# random search with max iter (F1 score):
+#
