@@ -39,6 +39,10 @@ test_df = pd.read_csv(test_file)
 api_dataframe = pd.concat([train_df, test_df], axis=0)
 api_dataframe.reset_index(inplace=True, drop=True)
 
+sorted_labels = api_dataframe.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
+    ascending=False)
+
+
 label_encoder = LabelEncoder()
 values = np.array(api_dataframe.ServiceClassification)
 api_dataframe['y'] = label_encoder.fit_transform(values)
@@ -138,10 +142,19 @@ for itr in max_iter:
             print("Time taken: ", time.time() - start_time)
             f1_scores = f1_score(y_test, pdn, average=None)
             print("F scores: ", list(f1_scores), "Len: ", len(f1_scores))
-            print("F score average: ", str(f_score))
+            print("F score Weighted: ", str(f_score))
+
 
 
 pass
+
+per_class_score = []
+for y in sorted_labels.index:
+    label_idx = list(label_encoder.classes_).index('y')
+    per_class_score.append((y, list(f1_scores)[label_idx]))
+
+print(per_class_score)
+
 # pdb.set_trace()
 
 # without max iter in search:
