@@ -163,7 +163,7 @@ for y in sorted_labels.index:
     score_dict['Class'].append(str(y))
     score_dict['Score'].append(str(list(f1_scores)[label_idx]))
 
-score_df = pd.DataFrame.from_dict(result_dict)
+score_df = pd.DataFrame.from_dict(score_dict)
 csv_file_path2 = "/home/aa7514/PycharmProjects/kdd_project/plots/class_score_50_tiny_random_search.csv"
 score_df.to_csv(csv_file_path2, index=False)
 
