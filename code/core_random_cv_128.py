@@ -103,3 +103,6 @@ print("best params: ", search.best_params_)
 
 
 # besr params:  {'C': 0.28414423279154777, 'class_weight': None, 'penalty': 'l2'}
+
+# random search with max iter:
+# 'C': 0.08087358976130288, 'class_weight': None, 'max_iter': 250, 'penalty': 'l2'
