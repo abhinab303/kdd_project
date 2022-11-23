@@ -130,6 +130,9 @@ for itr in max_iter:
             csv_file_path = "/home/aa7514/PycharmProjects/kdd_project/plots/result_50_tiny_random_search.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
+            f1_scores = f1_score(y_test, pdn, average=None)
+            print("F scores: ", list(f1_scores), "Len: ", len(f1_scores))
+
 
 pass
 # pdb.set_trace()
