@@ -109,3 +109,6 @@ print("best params: ", search.best_params_)
 
 # random search with max iter (F1 score)/50 parameter samples:
 # best params:  {'C': 1.1576243717888044, 'class_weight': None, 'max_iter': 700, 'penalty': 'l2'}
+
+# random search with max iter (F1 score)/100 parameter samples:
+# best params{'C': 0.8595229470023127, 'class_weight': None, 'max_iter': 550, 'penalty': 'l2'}

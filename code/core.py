@@ -75,12 +75,12 @@ print("label count: ", len(np.unique(y_train)))
 # Hyper Params:
 # max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
 # max_iter = [200]
-max_iter = [700]
+max_iter = [550]
 # class_weight = ["balanced", None]
 class_weight = [None]
 # c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 # c_param = [0.1537017058909389]
-c_param = [1.1576243717888044]
+c_param = [0.8595229470023127]
 
 result_dict = {
     'max_iter': [],
@@ -139,3 +139,17 @@ pass
 # with max iter in search:
 # grid search:
 # random search:
+
+# random search with max iter (F1 score)/50 parameter samples:
+# max_iter,class_weight,c,Train,Test,F1 score,Precision,Recall
+# 700,None,1.1576243717888044
+# 0.5619509746507153,0.4840531561461794,0.4572721214195841,0.4594292414071669,0.4840531561461794
+
+# random search with max iter (F1 score)/100 parameter samples:
+# 550,None, 0.8595229470023127,
+# 0.5597757885049778,0.4870431893687708,0.4589428652068902,0.4637838280118621,0.4870431893687708
+
+
+
+
+
