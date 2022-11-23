@@ -39,6 +39,10 @@ test_df = pd.read_csv(test_file)
 api_dataframe = pd.concat([train_df, test_df], axis=0)
 api_dataframe.reset_index(inplace=True, drop=True)
 
+label_encoder = LabelEncoder()
+values = np.array(api_dataframe.ServiceClassification)
+api_dataframe['y'] = label_encoder.fit_transform(values)
+
 training_data = api_dataframe.iloc[0:len(train_df)]
 testing_data = api_dataframe.iloc[len(train_df):]
 
@@ -62,14 +66,16 @@ print("train data dim: ",
 print("all data dim: ", word_vectors.shape)
 
 x_train = word_vectors[training_data["ServiceDescription"].index.values.tolist()]
-label_encoder = LabelEncoder()
-values = np.array(training_data.ServiceClassification)
-y_train = label_encoder.fit_transform(values)
+# label_encoder = LabelEncoder()
+# values = np.array(training_data.ServiceClassification)
+# y_train = label_encoder.fit_transform(values)
+y_train = training_data['y']
 
 x_test = word_vectors[testing_data["ServiceDescription"].index.values.tolist()]
 # label_encoder = LabelEncoder()
-values = np.array(testing_data.ServiceClassification)
-y_test = label_encoder.fit_transform(values)
+# values = np.array(testing_data.ServiceClassification)
+# y_test = label_encoder.fit_transform(values)
+y_test = testing_data['y']
 
 # pdb.set_trace()
 
