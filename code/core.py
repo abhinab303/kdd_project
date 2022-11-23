@@ -149,11 +149,14 @@ for itr in max_iter:
 pass
 
 per_class_score = []
+conf_label_order = []
 for y in sorted_labels.index:
     label_idx = list(label_encoder.classes_).index(y)
+    conf_label_order.append(label_idx)
     per_class_score.append((y, list(f1_scores)[label_idx]))
+    print(y, list(f1_scores)[label_idx])
 
-print(per_class_score)
+# print(per_class_score)
 
 # pdb.set_trace()
 
@@ -193,6 +196,7 @@ for title, normalize in titles_options:
         include_values=False,
         cmap=plt.cm.Blues,
         normalize=normalize,
+        labels = conf_label_order
     )
     disp.ax_.set_title(title)
 
@@ -200,6 +204,6 @@ for title, normalize in titles_options:
     print(disp.confusion_matrix)
 
 plt.show()
-plt.savefig('/home/aa7514/PycharmProjects/kdd_project/plots/conf_50_128.pdf', bbox_inches='tight')
+plt.savefig('/home/aa7514/PycharmProjects/kdd_project/plots/conf_ordered_50_128.pdf', bbox_inches='tight')
 
 pdb.set_trace()
