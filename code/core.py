@@ -150,7 +150,7 @@ pass
 
 per_class_score = []
 for y in sorted_labels.index:
-    label_idx = list(label_encoder.classes_).index('y')
+    label_idx = list(label_encoder.classes_).index(y)
     per_class_score.append((y, list(f1_scores)[label_idx]))
 
 print(per_class_score)
