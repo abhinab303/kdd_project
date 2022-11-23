@@ -132,6 +132,7 @@ for itr in max_iter:
             print("Time taken: ", time.time() - start_time)
             f1_scores = f1_score(y_test, pdn, average=None)
             print("F scores: ", list(f1_scores), "Len: ", len(f1_scores))
+            print("F score average: ", str(f_score))
 
 
 pass
