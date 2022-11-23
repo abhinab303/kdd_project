@@ -149,12 +149,23 @@ for itr in max_iter:
 pass
 
 per_class_score = []
+score_dict = {
+    'Class': [],
+    'Score': []
+}
+
 conf_label_order = []
 for y in sorted_labels.index:
     label_idx = list(label_encoder.classes_).index(y)
     conf_label_order.append(label_idx)
     per_class_score.append((y, list(f1_scores)[label_idx]))
     print(y, list(f1_scores)[label_idx])
+    score_dict['Class'].append(str(y))
+    score_dict['Score'].append(str(list(f1_scores)[label_idx]))
+
+score_df = pd.DataFrame.from_dict(result_dict)
+csv_file_path2 = "/home/aa7514/PycharmProjects/kdd_project/plots/class_score_50_tiny_random_search.csv"
+score_df.to_csv(csv_file_path2, index=False)
 
 # print(per_class_score)
 
