@@ -14,6 +14,7 @@ from pathlib import Path
 import pdb
 
 import time
+import matplotlib.pyplot as plt
 
 l = 50
 
@@ -66,9 +67,11 @@ values = np.array(training_data.ServiceClassification)
 y_train = label_encoder.fit_transform(values)
 
 x_test = word_vectors[testing_data["ServiceDescription"].index.values.tolist()]
-label_encoder = LabelEncoder()
+# label_encoder = LabelEncoder()
 values = np.array(testing_data.ServiceClassification)
 y_test = label_encoder.fit_transform(values)
+
+# pdb.set_trace()
 
 print("label count: ", len(np.unique(y_train)))
 
@@ -101,7 +104,7 @@ for itr in max_iter:
             print("training...")
             start_time = time.time()
             clf = svm.LinearSVC(C=cpm, class_weight=wt, max_iter=itr)
-            clf.fit(x_train, y_train)
+            classifier = clf.fit(x_train, y_train)
             pdn = clf.predict(x_test)
             train_acc = clf.score(x_train, y_train)
             test_acc = clf.score(x_test, y_test)
@@ -149,7 +152,31 @@ pass
 # 550,None, 0.8595229470023127,
 # 0.5597757885049778,0.4870431893687708,0.4589428652068902,0.4637838280118621,0.4870431893687708
 
+from sklearn.metrics import ConfusionMatrixDisplay
 
+np.set_printoptions(precision=2)
+# Plot non-normalized confusion matrix
+titles_options = [
+    ("Confusion matrix, without normalization", None),
+    ("Normalized confusion matrix", "true"),
+]
+for title, normalize in titles_options:
+    disp = ConfusionMatrixDisplay.from_estimator(
+        classifier,
+        x_test,
+        y_test,
+        # display_labels=label_encoder.classes_,
+        display_labels=[""]*50,
+        include_values=False,
+        cmap=plt.cm.Blues,
+        normalize=normalize,
+    )
+    disp.ax_.set_title(title)
 
+    print(title)
+    print(disp.confusion_matrix)
 
+plt.show()
+plt.savefig('/home/aa7514/PycharmProjects/kdd_project/plots/conf_50_128.pdf', bbox_inches='tight')
 
+pdb.set_trace()
