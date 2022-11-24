@@ -7,6 +7,11 @@ from simpletransformers.config.model_args import ModelArgs
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import precision_score, f1_score, recall_score
 
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import uniform
+from sklearn.model_selection import train_test_split
+
+
 from sklearn import svm
 
 from pathlib import Path
@@ -14,16 +19,12 @@ from pathlib import Path
 import pdb
 
 import time
-import matplotlib.pyplot as plt
-
-from sklearn.metrics import ConfusionMatrixDisplay
-from sklearn.model_selection import train_test_split
 
 l = 50
-sampling = "over"
+sampling = "both"
 
 if l == 50:
-    max_iter = [1000]
+    max_iter = [550]
     class_weight = [None]
     c_param = [0.8595229470023127]
 else:
@@ -89,7 +90,33 @@ elif sampling == "over":
         if i == 0:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
         else:
-            pdb.set_trace()
+            # pdb.set_trace()
+            y_chosen = np.random.choice(y_indices, min_freq, replace=True)
+        y_samples = api_dataframe_org.loc[y_chosen]
+        api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
+
+    api_dataframe.reset_index(inplace=True, drop=True)
+
+    label_encoder = LabelEncoder()
+    values = np.array(api_dataframe.ServiceClassification)
+    api_dataframe['y'] = label_encoder.fit_transform(values)
+
+    training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
+                                   stratify=api_dataframe[['ServiceClassification']])
+
+elif sampling == "both":
+    min_freq = int(sorted_labels.mean())
+    api_dataframe = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
+                                  'ServiceDescription': pd.Series(dtype='object'),
+                                  'ServiceClassification': pd.Series(dtype='object'),
+                                  # 'y': pd.Series(dtype='object')
+                                  })
+    for (i, y) in enumerate(sorted_labels.index):
+        y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
+        if sorted_labels[i] >= min_freq:
+            y_chosen = np.random.choice(y_indices, min_freq, replace=False)
+        else:
+            # pdb.set_trace()
             y_chosen = np.random.choice(y_indices, min_freq, replace=True)
         y_samples = api_dataframe_org.loc[y_chosen]
         api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
@@ -117,7 +144,7 @@ sorted_labels_after = api_dataframe.groupby('ServiceClassification')['ServiceCla
     ascending=False)
 print(sorted_labels_after)
 
-op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny_over{l}.npy"
+op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny_both{l}.npy"
 # op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb{l}.npy"
 op_file = Path(op_file_path)
 # if op_file.exists():
@@ -133,19 +160,30 @@ word_vectors = emb_model.encode_sentences(api_dataframe['ServiceDescription'],
 # pass
 # pdb.set_trace()
 
+
+
 print("train data dim: ",
       word_vectors[training_data["ServiceDescription"].index.values.tolist()].shape)
 print("all data dim: ", word_vectors.shape)
 
 x_train = word_vectors[training_data["ServiceDescription"].index.values.tolist()]
-y_train = training_data['y']
+label_encoder = LabelEncoder()
+values = np.array(training_data.ServiceClassification)
+y_train = label_encoder.fit_transform(values)
 
 x_test = word_vectors[testing_data["ServiceDescription"].index.values.tolist()]
-y_test = testing_data['y']
-
-# pdb.set_trace()
+label_encoder = LabelEncoder()
+values = np.array(testing_data.ServiceClassification)
+y_test = label_encoder.fit_transform(values)
 
 print("label count: ", len(np.unique(y_train)))
+
+# Hyper Params:
+# max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
+
+max_iter = [1] + list(range(50,1050,50))
+class_weight = ["balanced", None]
+c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 result_dict = {
     'max_iter': [],
@@ -159,85 +197,11 @@ result_dict = {
 }
 # max_iter_list = []
 
-for itr in max_iter:
-    for cpm in c_param:
-        for wt in class_weight:
-            # clf = svm.SVC(C=1, gamma="scale", class_weight="balanced", max_iter=250)
-            print("training...")
-            start_time = time.time()
-            clf = svm.LinearSVC(C=cpm, class_weight=wt, max_iter=itr)
-            classifier = clf.fit(x_train, y_train)
-            pdn = clf.predict(x_test)
-            train_acc = clf.score(x_train, y_train)
-            test_acc = clf.score(x_test, y_test)
-            f_score = f1_score(y_test, pdn, average='weighted')
-            precision = precision_score(y_test, pdn, average='weighted')
-            recall = recall_score(y_test, pdn, average='weighted')
-            # print("Train: ", train_acc)
-            # print("Test: ", test_acc)
-            # print("F1 score: ", f1_score)
-            # print("Precision: ", precision)
-            # print("Recall: ", recall)
-            result_dict['max_iter'].append(str(itr))
-            result_dict['class_weight'].append(str(wt))
-            result_dict['c'].append(str(cpm))
-            result_dict['Train'].append(str(train_acc))
-            result_dict['Test'].append(str(test_acc))
-            result_dict['F1 score'].append(str(f_score))
-            result_dict['Precision'].append(str(precision))
-            result_dict['Recall'].append(str(recall))
-
-            csv_df = pd.DataFrame.from_dict(result_dict)
-            # pdb.set_trace()
-            csv_file_path = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_over_bs.csv"
-            csv_df.to_csv(csv_file_path, index=False)
-            print("Time taken: ", time.time() - start_time)
-            f1_scores = f1_score(y_test, pdn, average=None)
-            print("F scores: ", list(f1_scores), "Len: ", len(f1_scores))
-            print("F score Weighted: ", str(f_score))
-
-per_class_score = []
-score_dict = {
-    'Class': [],
-    'Score': []
-}
-
-conf_label_order = []
-for y in sorted_labels.index:
-    label_idx = list(label_encoder.classes_).index(y)
-    conf_label_order.append(label_idx)
-    per_class_score.append((y, list(f1_scores)[label_idx]))
-    score_dict['Class'].append(str(y))
-    score_dict['Score'].append(str(list(f1_scores)[label_idx]))
-
-score_df = pd.DataFrame.from_dict(score_dict)
-csv_file_path2 = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_over_cs.csv"
-score_df.to_csv(csv_file_path2, index=False)
-
-np.set_printoptions(precision=2)
-# Plot non-normalized confusion matrix
-titles_options = [
-    # ("Confusion matrix, without normalization", None),
-    (f"Top {l}", "true"),
-]
-for title, normalize in titles_options:
-    disp = ConfusionMatrixDisplay.from_estimator(
-        classifier,
-        x_test,
-        y_test,
-        # display_labels=label_encoder.classes_,
-        display_labels=[""]*l,
-        include_values=False,
-        cmap=plt.cm.Blues,
-        normalize=normalize,
-        labels = conf_label_order
-    )
-    disp.ax_.set_title(title)
-
-    print(title)
-    print(disp.confusion_matrix)
-
-plt.show()
-plt.savefig(f'/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_over_cm.pdf', bbox_inches='tight')
-
-pdb.set_trace()
+print("training...")
+start_time = time.time()
+svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
+distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'],
+                     class_weight=["balanced", None], max_iter=max_iter)
+clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1, scoring="f1_weighted", n_iter=20)
+search = clf.fit(x_train, y_train)
+print("best params: ", search.best_params_)
