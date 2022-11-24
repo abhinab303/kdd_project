@@ -20,12 +20,12 @@ from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split
 
 l = 50
-sampling = "normal"
+sampling = "both"
 
 if l == 50:
     max_iter = [1000]
     class_weight = ['balanced']
-    c_param = [0.11342595463488636]
+    c_param = [0.7668830376515554]
 else:
     max_iter = [550]
     class_weight = [None]
