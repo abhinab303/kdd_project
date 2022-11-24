@@ -89,7 +89,7 @@ elif sampling == "over":
         if i == 0:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
         else:
-            pdb.set_trace()
+            # pdb.set_trace()
             y_chosen = np.random.choice(y_indices, min_freq, replace=True)
         y_samples = api_dataframe_org.loc[y_chosen]
         api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
