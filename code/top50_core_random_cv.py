@@ -21,7 +21,7 @@ import pdb
 import time
 
 l = 50
-sampling = "normal"
+sampling = "both"
 
 if l == 50:
     max_iter = [550]
@@ -206,12 +206,15 @@ print("best params: ", search.best_params_)
 # best params:  {'C': 0.14207211639577388, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'}
 # w/o l1 penalty in the param distr:
 # best params:  {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'} f1: 58.14
+# after only sampling train data:
+# best params: {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
 
 # NS, 768d, 1000e
+# best params:  {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
+# after only sampling train data:
 # best params:  {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
 
 # BS, 768d, 1000e
 # best params:  {'C': 0.7668830376515554, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
-# after only sampling train data:
-# best params: {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
+
 

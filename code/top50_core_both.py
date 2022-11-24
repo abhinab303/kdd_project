@@ -20,7 +20,7 @@ from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split
 
 l = 50
-sampling = "under"
+sampling = "normal"
 
 if l == 50:
     max_iter = [1000]
