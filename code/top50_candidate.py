@@ -16,7 +16,7 @@ from sklearn.metrics import precision_score, f1_score, recall_score
 from sklearn.model_selection import train_test_split
 
 l = 50
-sampling = "normal"
+sampling = "both"
 
 if l == 50:
     max_iter = [1000]
