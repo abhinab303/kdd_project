@@ -194,4 +194,5 @@ print("best params: ", search.best_params_)
 # US, 768d, 1000e
 # best params:  {'C': 0.14207211639577388, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'}
 
-
+# NS, 768d, 1000e
+# best params:  {'C': 0.11342595463488636, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}

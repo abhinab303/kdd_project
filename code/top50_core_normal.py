@@ -22,8 +22,8 @@ l = 50
 
 if l == 50:
     max_iter = [1000]
-    class_weight = [None]
-    c_param = [0.8595229470023127]
+    class_weight = ["Balanced"]
+    c_param = [0.11342595463488636]
 else:
     max_iter = [550]
     class_weight = [None]
