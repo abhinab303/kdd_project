@@ -217,5 +217,9 @@ print("best params: ", search.best_params_)
 # BS, 768d, 1000e
 # best params:  {'C': 0.7668830376515554, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
 # after only sampling train data:
-# best params:  {'C': 0.7668830376515554, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'}
+# best params:  {'C': 0.7668830376515554, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2'} f1: 56.08
+
+# OS, 768d, 1000e
+# only sample train:
+# best params:  {'C': 1.6885314971620347, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'}
 
