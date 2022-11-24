@@ -21,7 +21,7 @@ import pdb
 import time
 
 l = 50
-sampling = "both"
+sampling = "under"
 
 if l == 50:
     max_iter = [550]
@@ -38,8 +38,8 @@ fig_dir = "/home/aa7514/PycharmProjects/kdd_project/plots/"
 model_args = ModelArgs(max_seq_length=100)
 emb_model = RepresentationModel(
         model_type="bert",
-        # model_name="bert-base-uncased",
-        model_name="google/bert_uncased_L-2_H-128_A-2",
+        model_name="bert-base-uncased",
+        # model_name="google/bert_uncased_L-2_H-128_A-2",
         use_cuda=True,
         # args= model_args
     )
@@ -143,24 +143,7 @@ else:
 sorted_labels_after = api_dataframe.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
     ascending=False)
 print(sorted_labels_after)
-
-op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny_both{l}.npy"
-# op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb{l}.npy"
-op_file = Path(op_file_path)
-# if op_file.exists():
-# if False:
-#     word_vectors = np.load(op_file_path)
-# else:
-word_vectors = emb_model.encode_sentences(api_dataframe['ServiceDescription'],
-                                          combine_strategy="mean")
-# with open(op_file_path, 'wb') as f:
-#     np.save(f, word_vectors)
-#
-
-# pass
-# pdb.set_trace()
-
-
+word_vectors = emb_model.encode_sentences(api_dataframe['ServiceDescription'], combine_strategy="mean")
 
 print("train data dim: ",
       word_vectors[training_data["ServiceDescription"].index.values.tolist()].shape)
@@ -182,8 +165,8 @@ print("label count: ", len(np.unique(y_train)))
 # max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
 
 # max_iter = list(range(300,1300,100))
-max_iter = 1000
-class_weight = None
+max_iter = [1000]
+class_weight = [None]
 # c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 result_dict = {
@@ -201,7 +184,7 @@ result_dict = {
 print("training...")
 start_time = time.time()
 svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
-distributions = dict(C=uniform(loc=0, scale=4), penalty=['l2', 'l1'],
+distributions = dict(C=uniform(loc=0, scale=2), penalty=['l2', 'l1'],
                      class_weight=["balanced", None], max_iter=max_iter)
 clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1, scoring="f1_weighted", n_iter=10)
 search = clf.fit(x_train, y_train)
