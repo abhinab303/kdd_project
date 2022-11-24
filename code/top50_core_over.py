@@ -84,7 +84,7 @@ elif sampling == "over":
                                   'ServiceClassification': pd.Series(dtype='object'),
                                   # 'y': pd.Series(dtype='object')
                                   })
-    for (y, i) in enumerate(sorted_labels.index):
+    for (i, y) in enumerate(sorted_labels.index):
         y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
         if i == 0:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
