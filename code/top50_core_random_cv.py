@@ -181,9 +181,9 @@ print("label count: ", len(np.unique(y_train)))
 # Hyper Params:
 # max_iter = [100, 150, 200, 250, 300, 350, 400, 450, 500]
 
-max_iter = [1] + list(range(50,1050,50))
+max_iter = list(range(300,1300,100))
 class_weight = ["balanced", None]
-c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+# c_param = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 result_dict = {
     'max_iter': [],

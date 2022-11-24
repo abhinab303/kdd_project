@@ -23,7 +23,7 @@ l = 50
 sampling = "under"
 
 if l == 50:
-    max_iter = [550]
+    max_iter = [1000]
     class_weight = [None]
     c_param = [0.8595229470023127]
 else:
@@ -37,8 +37,8 @@ fig_dir = "/home/aa7514/PycharmProjects/kdd_project/plots/"
 model_args = ModelArgs(max_seq_length=100)
 emb_model = RepresentationModel(
         model_type="bert",
-        # model_name="bert-base-uncased",
-        model_name="google/bert_uncased_L-2_H-128_A-2",
+        model_name="bert-base-uncased",
+        # model_name="google/bert_uncased_L-2_H-128_A-2",
         use_cuda=True,
         # args= model_args
     )
