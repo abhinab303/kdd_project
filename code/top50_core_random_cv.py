@@ -21,7 +21,7 @@ import pdb
 import time
 
 l = 50
-sampling = "normal"
+sampling = "under"
 
 if l == 50:
     max_iter = [550]
