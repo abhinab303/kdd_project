@@ -112,7 +112,7 @@ elif sampling == "both":
                                   })
     for (i, y) in enumerate(sorted_labels.index):
         y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
-        if sorted_labels[i] <= min_freq:
+        if sorted_labels[i] >= min_freq:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
         else:
             # pdb.set_trace()
