@@ -25,7 +25,8 @@ sampling = "under"
 if l == 50:
     max_iter = [1000]
     class_weight = [None]
-    c_param = [0.8595229470023127]
+    # c_param = [0.8595229470023127]
+    c_param = [0.14207211639577388]
 else:
     max_iter = [550]
     class_weight = [None]

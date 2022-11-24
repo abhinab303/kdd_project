@@ -184,8 +184,14 @@ result_dict = {
 print("training...")
 start_time = time.time()
 svm_p = svm.LinearSVC(C=1, class_weight="balanced", max_iter=1000)
-distributions = dict(C=uniform(loc=0, scale=2), penalty=['l2', 'l1'],
+distributions = dict(C=uniform(loc=0, scale=2), penalty=['l2'],
                      class_weight=["balanced", None], max_iter=max_iter)
 clf = RandomizedSearchCV(svm_p, distributions, random_state=0, n_jobs=-1, scoring="f1_weighted", n_iter=10)
 search = clf.fit(x_train, y_train)
 print("best params: ", search.best_params_)
+
+
+# US, 768d, 1000e
+# best params:  {'C': 0.14207211639577388, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'}
+
+
