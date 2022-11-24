@@ -25,7 +25,7 @@ sampling = "both"
 if l == 50:
     max_iter = [1000]
     class_weight = ['balanced']
-    c_param = [0.7668830376515554]
+    c_param = [0.11342595463488636]
 else:
     max_iter = [550]
     class_weight = [None]
