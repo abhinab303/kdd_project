@@ -49,97 +49,106 @@ test_file = f"{data_dir}{l}/test.csv"
 train_df = pd.read_csv(train_file)
 test_df = pd.read_csv(test_file)
 
-api_dataframe_org = pd.concat([train_df, test_df], axis=0)
-api_dataframe_org.reset_index(inplace=True, drop=True)
+api_dataframe = pd.concat([train_df, test_df], axis=0)
+api_dataframe.reset_index(inplace=True, drop=True)
 
-sorted_labels = api_dataframe_org.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
+# sorted_labels = api_dataframe.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
+#     ascending=False)
+
+label_encoder = LabelEncoder()
+values = np.array(api_dataframe.ServiceClassification)
+api_dataframe['y'] = label_encoder.fit_transform(values)
+
+training_data = api_dataframe.iloc[0:len(train_df)]
+testing_data = api_dataframe.iloc[len(train_df):]
+
+sorted_labels = training_data.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
     ascending=False)
 
 if sampling == "under":
     min_freq = sorted_labels.values[-1]
-    api_dataframe = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
-                                  'ServiceDescription': pd.Series(dtype='object'),
-                                  'ServiceClassification': pd.Series(dtype='object'),
-                                  # 'y': pd.Series(dtype='object')
-                                  })
+    t_df = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
+                          'ServiceDescription': pd.Series(dtype='object'),
+                          'ServiceClassification': pd.Series(dtype='object'),
+                          # 'y': pd.Series(dtype='object')
+                          })
     for y in sorted_labels.index:
-        y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
+        y_indices = training_data[training_data.ServiceClassification == y].index
         y_chosen = np.random.choice(y_indices, min_freq, replace=False)
-        y_samples = api_dataframe_org.loc[y_chosen]
-        api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
+        y_samples = training_data.loc[y_chosen]
+        t_df = pd.concat([t_df, y_samples], axis=0)
 
-    api_dataframe.reset_index(inplace=True, drop=True)
+    # api_dataframe.reset_index(inplace=True, drop=True)
 
-    label_encoder = LabelEncoder()
-    values = np.array(api_dataframe.ServiceClassification)
-    api_dataframe['y'] = label_encoder.fit_transform(values)
+    # label_encoder = LabelEncoder()
+    # values = np.array(api_dataframe.ServiceClassification)
+    # api_dataframe['y'] = label_encoder.fit_transform(values)
+    #
+    # training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
+    #                                stratify=api_dataframe[['ServiceClassification']])
 
-    training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
-                                   stratify=api_dataframe[['ServiceClassification']])
+    training_data = t_df
 
 elif sampling == "over":
     min_freq = sorted_labels.values[0]
-    api_dataframe = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
+    t_df = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
                                   'ServiceDescription': pd.Series(dtype='object'),
                                   'ServiceClassification': pd.Series(dtype='object'),
                                   # 'y': pd.Series(dtype='object')
                                   })
     for (i, y) in enumerate(sorted_labels.index):
-        y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
+        y_indices = training_data[training_data.ServiceClassification == y].index
         if i == 0:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
         else:
             # pdb.set_trace()
             y_chosen = np.random.choice(y_indices, min_freq, replace=True)
-        y_samples = api_dataframe_org.loc[y_chosen]
-        api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
+        y_samples = training_data.loc[y_chosen]
+        t_df = pd.concat([t_df, y_samples], axis=0)
 
-    api_dataframe.reset_index(inplace=True, drop=True)
+    # api_dataframe.reset_index(inplace=True, drop=True)
 
-    label_encoder = LabelEncoder()
-    values = np.array(api_dataframe.ServiceClassification)
-    api_dataframe['y'] = label_encoder.fit_transform(values)
+    # label_encoder = LabelEncoder()
+    # values = np.array(api_dataframe.ServiceClassification)
+    # api_dataframe['y'] = label_encoder.fit_transform(values)
+    #
+    # training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
+    #                                stratify=api_dataframe[['ServiceClassification']])
 
-    training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
-                                   stratify=api_dataframe[['ServiceClassification']])
+    training_data = t_df
 
 elif sampling == "both":
     min_freq = int(sorted_labels.mean())
-    api_dataframe = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
+    t_df = pd.DataFrame({'ServiceName': pd.Series(dtype='object'),
                                   'ServiceDescription': pd.Series(dtype='object'),
                                   'ServiceClassification': pd.Series(dtype='object'),
                                   # 'y': pd.Series(dtype='object')
                                   })
     for (i, y) in enumerate(sorted_labels.index):
-        y_indices = api_dataframe_org[api_dataframe_org.ServiceClassification == y].index
+        y_indices = training_data[training_data.ServiceClassification == y].index
         if sorted_labels[i] >= min_freq:
             y_chosen = np.random.choice(y_indices, min_freq, replace=False)
         else:
             # pdb.set_trace()
             y_chosen = np.random.choice(y_indices, min_freq, replace=True)
-        y_samples = api_dataframe_org.loc[y_chosen]
-        api_dataframe = pd.concat([api_dataframe, y_samples], axis=0)
+        y_samples = training_data.loc[y_chosen]
+        t_df = pd.concat([t_df, y_samples], axis=0)
 
-    api_dataframe.reset_index(inplace=True, drop=True)
+    # api_dataframe.reset_index(inplace=True, drop=True)
+    #
+    # label_encoder = LabelEncoder()
+    # values = np.array(api_dataframe.ServiceClassification)
+    # api_dataframe['y'] = label_encoder.fit_transform(values)
+    #
+    # training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
+    #                                stratify=api_dataframe[['ServiceClassification']])
 
-    label_encoder = LabelEncoder()
-    values = np.array(api_dataframe.ServiceClassification)
-    api_dataframe['y'] = label_encoder.fit_transform(values)
-
-    training_data, testing_data = train_test_split(api_dataframe, test_size=0.2, random_state=0,
-                                   stratify=api_dataframe[['ServiceClassification']])
+    training_data = t_df
 
 else:
-    api_dataframe = api_dataframe_org
+    pass
 
-    label_encoder = LabelEncoder()
-    values = np.array(api_dataframe.ServiceClassification)
-    api_dataframe['y'] = label_encoder.fit_transform(values)
-
-    training_data = api_dataframe.iloc[0:len(train_df)]
-    testing_data = api_dataframe.iloc[len(train_df):]
-
-sorted_labels_after = api_dataframe.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
+sorted_labels_after = training_data.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
     ascending=False)
 print(sorted_labels_after)
 
@@ -215,7 +224,7 @@ for itr in max_iter:
 
             csv_df = pd.DataFrame.from_dict(result_dict)
             # pdb.set_trace()
-            csv_file_path = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_both_bs.csv"
+            csv_file_path = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_{sampling}_bs.csv"
             csv_df.to_csv(csv_file_path, index=False)
             print("Time taken: ", time.time() - start_time)
             f1_scores = f1_score(y_test, pdn, average=None)
@@ -237,7 +246,7 @@ for y in sorted_labels.index:
     score_dict['Score'].append(str(list(f1_scores)[label_idx]))
 
 score_df = pd.DataFrame.from_dict(score_dict)
-csv_file_path2 = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_both_cs.csv"
+csv_file_path2 = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_{sampling}_cs.csv"
 score_df.to_csv(csv_file_path2, index=False)
 
 np.set_printoptions(precision=2)
@@ -264,6 +273,6 @@ for title, normalize in titles_options:
     print(disp.confusion_matrix)
 
 plt.show()
-plt.savefig(f'/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_both_cm.pdf', bbox_inches='tight')
+plt.savefig(f'/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_core_{sampling}_cm.pdf', bbox_inches='tight')
 
 pdb.set_trace()

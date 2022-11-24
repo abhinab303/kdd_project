@@ -13,6 +13,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 
 from sklearn.metrics import precision_score, f1_score, recall_score
+from sklearn.model_selection import train_test_split
 
 l = 50
 sampling = "both"
@@ -160,7 +161,8 @@ y_test = label_encoder.fit_transform(values)
 print("label count: ", len(np.unique(y_train)))
 
 
-def eval_models(clf):
+
+def eval_models(clf, model_name):
     clf.fit(x_train, y_train)
 
     pdn = clf.predict(x_test)
