@@ -20,8 +20,8 @@ import pdb
 
 import time
 
-l = 50
-sampling = "over"
+l = 350
+sampling = "normal"
 
 if l == 50:
     max_iter = [550]
@@ -222,4 +222,7 @@ print("best params: ", search.best_params_)
 # OS, 768d, 1000e
 # only sample train:
 # best params:  {'C': 1.6885314971620347, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'} f1: 53
+
+# top 350
+# US
 
