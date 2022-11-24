@@ -87,7 +87,7 @@ else:
     training_data = api_dataframe.iloc[0:len(train_df)]
     testing_data = api_dataframe.iloc[len(train_df):]
 
-sorted_labels_after = api_dataframe_org.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
+sorted_labels_after = api_dataframe.groupby('ServiceClassification')['ServiceClassification'].count().sort_values(
     ascending=False)
 print(sorted_labels_after)
 
@@ -95,13 +95,13 @@ op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb_tiny_under{l
 # op_file_path = f"/home/aa7514/PycharmProjects/kdd_project/files/emb{l}.npy"
 op_file = Path(op_file_path)
 # if op_file.exists():
-if False:
-    word_vectors = np.load(op_file_path)
-else:
-    word_vectors = emb_model.encode_sentences(api_dataframe['ServiceDescription'],
-                                              combine_strategy="mean")
-    with open(op_file_path, 'wb') as f:
-        np.save(f, word_vectors)
+# if False:
+#     word_vectors = np.load(op_file_path)
+# else:
+word_vectors = emb_model.encode_sentences(api_dataframe['ServiceDescription'],
+                                          combine_strategy="mean")
+# with open(op_file_path, 'wb') as f:
+#     np.save(f, word_vectors)
 #
 
 # pass
