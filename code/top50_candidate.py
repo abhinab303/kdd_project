@@ -196,16 +196,16 @@ def eval_models(clf, model_name):
 
 print("AdaBoost: ")
 eval_models(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(random_state=0),
-                               n_estimators=10, random_state=0))
+                               n_estimators=10, random_state=0), "AdaBoost")
 print("LR: ")
-eval_models(LogisticRegression(random_state=0))
+eval_models(LogisticRegression(random_state=0), "Logistic Regression")
 print("NN: ")
-eval_models(MLPClassifier(random_state=1, max_iter=300))
+eval_models(MLPClassifier(random_state=1, max_iter=300), "Neural Network")
 print("RF: ")
 eval_models(RandomForestClassifier(
     # n_estimators=10,
                                    # max_depth=2,
-                                   random_state=0))
+                                   random_state=0), "Random Forest")
 
 # from sklearn.tree import DecisionTreeClassifier
 # eval_models(DecisionTreeClassifier(random_state=0))

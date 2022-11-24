@@ -221,5 +221,5 @@ print("best params: ", search.best_params_)
 
 # OS, 768d, 1000e
 # only sample train:
-# best params:  {'C': 1.6885314971620347, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'}
+# best params:  {'C': 1.6885314971620347, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l2'} f1: 53
 
