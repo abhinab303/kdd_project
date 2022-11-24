@@ -16,7 +16,7 @@ from sklearn.metrics import precision_score, f1_score, recall_score
 from sklearn.model_selection import train_test_split
 
 l = 50
-sampling = "both"
+sampling = "under"
 
 if l == 50:
     max_iter = [1000]
@@ -169,7 +169,12 @@ y_test = label_encoder.fit_transform(values)
 
 print("label count: ", len(np.unique(y_train)))
 
-
+result_dict = {
+    'Model':[],
+    'F Score': [],
+    'Precision': [],
+    'Recall': [],
+}
 
 def eval_models(clf, model_name):
     clf.fit(x_train, y_train)
@@ -183,6 +188,11 @@ def eval_models(clf, model_name):
     print("Train: ", clf.score(x_train, y_train))
     print("Test: ", clf.score(x_test, y_test))
     print("F P R: ", f_score, precision, recall)
+
+    result_dict['Model'].append(str(model_name))
+    result_dict['F Score'].append(str(f_score))
+    result_dict['Precision'].append(str(precision))
+    result_dict['Recall'].append(str(recall))
 
 print("AdaBoost: ")
 eval_models(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(random_state=0),
@@ -199,4 +209,9 @@ eval_models(RandomForestClassifier(
 
 # from sklearn.tree import DecisionTreeClassifier
 # eval_models(DecisionTreeClassifier(random_state=0))
+
+csv_df = pd.DataFrame.from_dict(result_dict)
+# pdb.set_trace()
+csv_file_path = f"/home/aa7514/PycharmProjects/kdd_project/plots/final/top{l}_candidate_{sampling}_score.csv"
+csv_df.to_csv(csv_file_path, index=False)
 
